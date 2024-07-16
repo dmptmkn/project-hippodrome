@@ -3,8 +3,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,81 +15,54 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 class HorseTest {
 
-    @Mock
-    Horse horse;
-
     private final String testName = "Horsie";
     private final double testSpeed = 20.0;
     private final double testDistance = 40.0;
 
-    //naming patter: test{Method}_Should{Do}_When{Condition}
-
     @Test
     void testConstructor_ShouldThrowException_WhenArgNameIsNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            Horse horse = new Horse(null, testSpeed);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Horse(null, testSpeed));
     }
 
     @Test
-    void testConstructor_ShouldThrowExceptionWithCertainMessage_WhenArgNameIsNull() {
-        try {
-            Horse horse = new Horse(null, testSpeed);
-        } catch (IllegalArgumentException e) {
-            assertEquals("Name cannot be null.", e.getMessage());
-        }
+    void testConstructor_ShouldThrowExceptionWithExpectedMessage_WhenArgNameIsNull() {
+        Throwable e = assertThrows(IllegalArgumentException.class, () -> new Horse(null, testSpeed));
+        assertEquals("Name cannot be null.", e.getMessage());
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"", " ", "\t", "\n", "\f"})
     void testConstructor_ShouldThrowException_WhenArgNameIsBlank(String name) {
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            Horse horse = new Horse(name, testSpeed);
-        });
-
-        assertEquals("Name cannot be blank.", exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> new Horse(name, testSpeed));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"", " ", "\t", "\n", "\f"})
-    void testConstructor_ShouldThrowExceptionWithCertainMessage_WhenArgNameIsBlank(String name) {
-        try {
-            Horse horse = new Horse(name, testSpeed);
-        } catch (IllegalArgumentException e) {
-            assertEquals("Name cannot be blank.", e.getMessage());
-        }
+    void testConstructor_ShouldThrowExceptionWithExpectedMessage_WhenArgNameIsBlank(String name) {
+        Throwable e = assertThrows(IllegalArgumentException.class, () -> new Horse(name, testSpeed));
+        assertEquals("Name cannot be blank.", e.getMessage());
     }
 
     @Test
     void testConstructor_ShouldThrowException_WhenArgSpeedIsNegative() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            Horse horse = new Horse(testName, -testSpeed);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Horse(testName, -testSpeed));
     }
 
     @Test
-    void testConstructor_ShouldThrowExceptionWithCertainMessage_WhenArgSpeedIsNegative() {
-        try {
-            Horse horse = new Horse(testName, -testSpeed);
-        } catch (IllegalArgumentException e) {
-            assertEquals("Speed cannot be negative.", e.getMessage());
-        }
+    void testConstructor_ShouldThrowExceptionWithExpectedMessage_WhenArgSpeedIsNegative() {
+        Throwable e = assertThrows(IllegalArgumentException.class, () -> new Horse(testName, -testSpeed));
+        assertEquals("Speed cannot be negative.", e.getMessage());
     }
 
     @Test
     void testConstructor_ShouldThrowException_WhenArgDistanceIsNegative() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            Horse horse = new Horse(testName, testSpeed, -testDistance);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Horse(testName, testSpeed, -testDistance));
     }
 
     @Test
-    void testConstructor_ShouldThrowExceptionWithCertainMessage_WhenArgDistanceIsNegative() {
-        try {
-            Horse horse = new Horse(testName, testSpeed, -testDistance);
-        } catch (IllegalArgumentException e) {
-            assertEquals("Distance cannot be negative.", e.getMessage());
-        }
+    void testConstructor_ShouldThrowExceptionWithExpectedMessage_WhenArgDistanceIsNegative() {
+        Throwable e = assertThrows(IllegalArgumentException.class, () -> new Horse(testName, testSpeed, -testDistance));
+        assertEquals("Distance cannot be negative.", e.getMessage());
     }
 
     @Test
@@ -154,7 +125,7 @@ class HorseTest {
     }
 
     @Test
-    void testMove_ShouldCallAnotherMethodWithCertainArguments_WhenCalled() {
+    void testMove_ShouldCallAnotherMethodWithExpectedArguments_WhenCalled() {
         try (MockedStatic<Horse> horseMockedStatic = Mockito.mockStatic(Horse.class)) {
             Horse horsie = new Horse(testName, testSpeed);
             horsie.move();
@@ -164,7 +135,7 @@ class HorseTest {
 
     @ParameterizedTest
     @ValueSource(doubles = {0, 0.2, 0.5, 0.9, 1, 10, 100, 1000})
-    void testMove_ShouldComputeDistanceUsingCertainFormula_WhenCalled(double fakeValue) {
+    void testMove_ShouldComputeDistanceUsingExpectedFormula_WhenCalled(double fakeValue) {
         Horse horsie = new Horse(testName, testSpeed, testDistance);
         double expectedDistance = horsie.getDistance() + horsie.getSpeed() * fakeValue;
 
