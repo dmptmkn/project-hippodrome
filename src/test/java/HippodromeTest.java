@@ -4,6 +4,8 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
@@ -37,11 +39,9 @@ class HippodromeTest {
 
     @Test
     void testGetHorses_ShouldReturnTheSameListAsWasPassedIntoConstructor_WhenCalled() {
-        //переписать через стрим
-        List<Horse> horses = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            horses.add(Instancio.create(Horse.class));
-        }
+        List<Horse> horses = Stream.generate(() -> Instancio.create(Horse.class))
+                .limit(30)
+                .collect(Collectors.toList());
 
         Hippodrome hippodrome = new Hippodrome(horses);
         List<Horse> horsesFromHippodrome = hippodrome.getHorses();
@@ -52,12 +52,11 @@ class HippodromeTest {
 
     @Test
     void testMove_ShouldCallTheMethodOnEveryElementOnTheList_WhenCalled() {
-        //переписать через стрим
         Horse mockHorse = Mockito.mock(Horse.class);
-        List<Horse> horses = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            horses.add(mockHorse);
-        }
+
+        List<Horse> horses = Stream.generate(() -> mockHorse)
+                .limit(50)
+                .collect(Collectors.toList());
 
         Hippodrome hippodrome = new Hippodrome(horses);
         hippodrome.move();

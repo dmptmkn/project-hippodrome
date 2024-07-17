@@ -127,8 +127,8 @@ class HorseTest {
     @Test
     void testMove_ShouldCallAnotherMethodWithExpectedArguments_WhenCalled() {
         try (MockedStatic<Horse> horseMockedStatic = Mockito.mockStatic(Horse.class)) {
-            Horse horsie = new Horse(testName, testSpeed);
-            horsie.move();
+            Horse horse = new Horse(testName, testSpeed);
+            horse.move();
             horseMockedStatic.verify(() -> Horse.getRandomDouble(0.2, 0.9));
         }
     }
@@ -136,13 +136,13 @@ class HorseTest {
     @ParameterizedTest
     @ValueSource(doubles = {0, 0.2, 0.5, 0.9, 1, 10, 100, 1000})
     void testMove_ShouldComputeDistanceUsingExpectedFormula_WhenCalled(double fakeValue) {
-        Horse horsie = new Horse(testName, testSpeed, testDistance);
-        double expectedDistance = horsie.getDistance() + horsie.getSpeed() * fakeValue;
+        Horse horse = new Horse(testName, testSpeed, testDistance);
+        double expectedDistance = horse.getDistance() + horse.getSpeed() * fakeValue;
 
         try (MockedStatic<Horse> horseMockedStatic = Mockito.mockStatic(Horse.class)) {
             horseMockedStatic.when(() -> Horse.getRandomDouble(0.2, 0.9)).thenReturn(fakeValue);
-            horsie.move();
-            double actualDistance = horsie.getDistance();
+            horse.move();
+            double actualDistance = horse.getDistance();
             assertEquals(expectedDistance, actualDistance);
         }
     }
