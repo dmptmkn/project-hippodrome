@@ -5,6 +5,7 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,26 +53,22 @@ class HippodromeTest {
 
     @Test
     void testMove_ShouldCallTheMethodOnEveryElementOnTheList_WhenCalled() {
-        Horse mockHorse = Mockito.mock(Horse.class);
-
-        List<Horse> horses = Stream.generate(() -> mockHorse)
+        List<Horse> horses = Stream.generate(() -> Mockito.mock(Horse.class))
                 .limit(50)
                 .collect(Collectors.toList());
 
         Hippodrome hippodrome = new Hippodrome(horses);
         hippodrome.move();
 
-        Mockito.verify(mockHorse, times(50)).move();
+        horses.forEach(h -> Mockito.verify(h, times(1)).move());
     }
 
     @Test
     void testGetWinner_ShouldReturnAnObjectWithMaxExpectedValue_whenCalled() {
-        double maxDistance = 40;
-
         List<Horse> horses = new ArrayList<>();
         Horse horse1 = new Horse("Horsie1", 20, 20);
         Horse horse2 = new Horse("Horsie2", 20, 30);
-        Horse horse3 = new Horse("Horsie3", 20, maxDistance);
+        Horse horse3 = new Horse("Horsie3", 20, 40);
         horses.add(horse1);
         horses.add(horse2);
         horses.add(horse3);

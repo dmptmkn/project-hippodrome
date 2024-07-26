@@ -1,3 +1,4 @@
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -6,10 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class Main {
-
-    public static final Logger log = LoggerFactory.getLogger(Main.class);
-    private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SS");
 
     public static void main(String[] args) throws Exception {
         List<Horse> horses = List.of(
@@ -22,8 +21,7 @@ public class Main {
                 new Horse("Cherry", 3)
         );
         Hippodrome hippodrome = new Hippodrome(horses);
-        log.info("{} INFO Main: Начало скачек. Количество участников: {}",
-                DATE_FORMATTER.format(new Date()), horses.size());
+        log.info("Main: Начало скачек. Количество участников: {}", horses.size());
 
         for (int i = 0; i < 100; i++) {
             hippodrome.move();
@@ -33,8 +31,7 @@ public class Main {
 
         String winnerName = hippodrome.getWinner().getName();
         System.out.println(winnerName + " wins!");
-        log.info("{} INFO Main: Окончание скачек. Победитель: {}",
-                DATE_FORMATTER.format(new Date()), winnerName);
+        log.info("Main: Окончание скачек. Победитель: {}", winnerName);
     }
 
     private static void watch(Hippodrome hippodrome) throws Exception {
