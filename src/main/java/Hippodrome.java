@@ -17,15 +17,15 @@ public class Hippodrome {
 
     public Hippodrome(List<Horse> horses) {
         if (isNull(horses)) {
-            log.error("Hippodrome: Horses list is null");
+            log.error("Horses list is null");
             throw new IllegalArgumentException("Horses cannot be null.");
         } else if (horses.isEmpty()) {
-            log.error("Hippodrome: Horses list is empty");
+            log.error("Horses list is empty");
             throw new IllegalArgumentException("Horses cannot be empty.");
         }
 
         this.horses = horses;
-        log.debug("Hippodrome: Создание Hippodrome, лошадей {}", horses.size());
+        log.debug("Создание Hippodrome, лошадей [{}]", horses.size());
     }
 
     public List<Horse> getHorses() {
